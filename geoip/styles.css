@@ -1,0 +1,56 @@
+.b-geo__overlay {
+	position: fixed;
+	left: 0; right: 0;
+	top: 0; bottom: 0;
+	z-index: 9999;
+	background: url("/geoip/overlay.png");
+	display: none;
+}
+
+.b-geo__popup {
+	position: fixed;
+	display: none;
+	z-index: 99999;
+	background-color: #e5e5e5;
+}
+
+.b-geo__popup.b-geo__city-confirm,
+.b-geo__popup.b-geo__city-list{
+	padding: 30px;
+	max-width: 600px;
+	max-height: 100%;
+	background-color: #fff;
+	text-align: center;
+}
+
+.b-geo__header {
+	padding: 0 0 15px 0;
+	font-size: 22px;
+	line-height: 30px;
+	color: #000;
+}
+
+.b-geo__input{
+	background: none;
+	border: none;
+	outline: none;
+	color: #428bca;
+	display: inline-block;
+	margin: 0 6px;
+	font-size: 21px;
+	cursor: pointer;
+	text-align: center;
+}
+
+.b-geo__input:hover{
+	text-decoration: underline;
+}
+
+.b_geo__city-list__input{
+	font-size: 15px;
+}
+
+.b-geo__city-name_header{
+	border-bottom: 1px dashed black;
+    cursor: pointer;
+}

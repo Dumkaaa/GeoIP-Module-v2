@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xsl:stylesheet>
+<xsl:stylesheet version="1.0"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:hostcms="http://www.hostcms.ru/"
+	exclude-result-prefixes="hostcms">
+	<xsl:output xmlns="http://www.w3.org/TR/xhtml1/strict" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" encoding="utf-8" indent="yes" method="html" omit-xml-declaration="no" version="1.0" media-type="text/xml"/>
+	
+	<xsl:decimal-format name="my" decimal-separator="," grouping-separator=" "/>
+	
+	<xsl:template match="/">
+		<xsl:apply-templates select="/shop"/>
+	</xsl:template>
+	
+	<xsl:variable name="n" select="number(3)"/>
+	
+	<xsl:template match="/shop">
+		
+		<!-- Получаем ID родительской группы и записываем в переменную $group -->
+		<xsl:variable name="group" select="group"/>
+		<xsl:choose>
+			<xsl:when test="$group = 0">
+				<!-- Отображение подгрупп данной группы, только если подгруппы есть и не идет фильтра по меткам -->
+				<xsl:if test="count(tag) = 0 and count(shop_producer) = 0 and count(//shop_group[parent_id=$group]) &gt; 0">
+					
+					<h1 hostcms:id="{@id}" hostcms:field="name" hostcms:entity="shop">
+						<xsl:value-of disable-output-escaping="yes" select="name"/>
+						<xsl:if test=".//city_name != ''">
+							купить в <xsl:value-of select=".//city_nameP" />
+						</xsl:if>
+					</h1>
+					
+					<!-- Описание выводится при отсутствии фильтрации по тэгам -->
+					<xsl:if test="count(tag) = 0 and page = 0 and description != ''">
+						<div><xsl:value-of disable-output-escaping="yes" select="description"/></div>
+					</xsl:if>
+					<xsl:apply-templates select=".//shop_group[parent_id=$group]"/>
+					<div class="clear"></div>
+					
+				</xsl:if>
+				<!-- Описание выводится при отсутствии фильтрации по тэгам -->
+				<xsl:if test="count(tag) = 0 and page = 0 and description != ''">
+				
+				</xsl:if>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:variable name="currentGroup" select=".//shop_group[@id=$group]" />
+				<h1>
+					<xsl:value-of disable-output-escaping="yes" select="$currentGroup/name"/>
+					<xsl:if test=".//city_name != ''">
+						купить в <xsl:value-of select=".//city_nameP" />
+				</xsl:if></h1>
+				<xsl:value-of disable-output-escaping="yes" select="$currentGroup/description"/>
+				
+			</xsl:otherwise>
+		</xsl:choose>
+
+		
+		<xsl:choose>
+			<xsl:when test=".//city_name = 'Москва'">
+				Описание для Москвы
+			</xsl:when>
+			<xsl:when test=".//city_name = 'Брянск'">
+				Описание для Брянска
+			</xsl:when>
+			<xsl:otherwise>
+				Описание по-умолчанию
+			</xsl:otherwise>
+		</xsl:choose>
+
+	</xsl:template>
+
+</xsl:stylesheet>
